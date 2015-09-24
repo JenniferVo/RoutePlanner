@@ -18,5 +18,20 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             this.Latitude = _latitude;
             this.Longitude = _longitude;
         }
+
+        public override string ToString()
+        {
+            string LongitudeToBeReturned = String.Format("{0:0.00}", Longitude);
+            string LatitudeToBeReturned = String.Format("{0:0.00}", Latitude);
+
+            if (this.Name != null)
+            {
+                return "Waypoint: " + Name + " " + LongitudeToBeReturned + "/" + LatitudeToBeReturned;
+            }
+            else
+            {
+                return "Waypoint: " + LongitudeToBeReturned + "/" + LatitudeToBeReturned;
+            }            
+        }
     }
 }
