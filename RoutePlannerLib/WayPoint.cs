@@ -26,12 +26,22 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
             if (this.Name != null)
             {
-                return "Waypoint: " + Name + " " + LongitudeToBeReturned + "/" + LatitudeToBeReturned;
+                return "Waypoint: " + Name + " " + LatitudeToBeReturned + "/" + LongitudeToBeReturned;
             }
             else
             {
-                return "Waypoint: " + LongitudeToBeReturned + "/" + LatitudeToBeReturned;
+                return "Waypoint: " + LatitudeToBeReturned + "/" + LongitudeToBeReturned;
             }            
+        }
+
+        public double Distance(WayPoint _target)
+        {
+            const int radius = 6371;
+            var d =
+                Math.Acos(Math.Sin(Latitude * Math.PI / 180) * Math.Sin(_target.Latitude * Math.PI / 180) +
+                          Math.Cos(Latitude * Math.PI / 180) * Math.Cos(_target.Latitude * Math.PI / 180) *
+                          Math.Cos(Longitude * Math.PI / 180 - _target.Longitude * Math.PI / 180));
+            return d * radius;
         }
     }
 }
