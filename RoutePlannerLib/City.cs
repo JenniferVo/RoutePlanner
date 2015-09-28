@@ -17,6 +17,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         {
             this.Name = name;
             this.Country = country;
+            this.Population = population;
             this.Location = new WayPoint(name, latitude, longitute);
         }
     }
