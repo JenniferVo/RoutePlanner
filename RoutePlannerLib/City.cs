@@ -8,10 +8,10 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 {
     public class City
     {
-        string Name;
-        string Country;
-        int Population;
-        public WayPoint Location;
+        public string Name { get; }
+        public string Country { get; }
+        public int Population { get; }
+        public WayPoint Location { get; }
 
         public City(string name, string country, int population, double latitude, double longitute)
         {
