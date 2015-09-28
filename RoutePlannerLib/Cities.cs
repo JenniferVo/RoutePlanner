@@ -18,6 +18,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
         public int ReadCities(string filename)
         {
+            //TODO: Find path to the txt file
             int numberOfNewCities = 0;
             string line;
 
@@ -57,6 +58,13 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                 Console.WriteLine("The file could not be read: " + e.Message);
             }
             return numberOfNewCities;
+        }
+
+        //TODO: Implement Indexer (Lab 2 aufg. 2c)
+
+        public IEnumerable<City> FindNeighbours(WayPoint location, double distance)
+        {            
+            return cities.Where(c => location.Distance(c.Location) <= distance).ToList();
         }
 
     }

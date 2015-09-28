@@ -11,7 +11,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         string Name;
         string Country;
         int Population;
-        WayPoint Location;
+        public WayPoint Location;
 
         public City(string name, string country, int population, double latitude, double longitute)
         {
