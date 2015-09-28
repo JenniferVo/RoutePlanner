@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
@@ -21,16 +23,17 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
         public override string ToString()
         {
-            string LongitudeToBeReturned = String.Format("{0:0.00}", Longitude);
-            string LatitudeToBeReturned = String.Format("{0:0.00}", Latitude);
+            var culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            string LongitudeToBeReturned = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", Longitude);
+            string LatitudeToBeReturned = String.Format(CultureInfo.InvariantCulture, "{0:0.00}", Latitude);
 
             if (this.Name != null)
             {
-                return "Waypoint: " + Name + " " + LatitudeToBeReturned + "/" + LongitudeToBeReturned;
+                return "WayPoint: " + Name + " " + LatitudeToBeReturned + "/" + LongitudeToBeReturned;
             }
             else
             {
-                return "Waypoint: " + LatitudeToBeReturned + "/" + LongitudeToBeReturned;
+                return "WayPoint: " + LatitudeToBeReturned + "/" + LongitudeToBeReturned;
             }            
         }
 
