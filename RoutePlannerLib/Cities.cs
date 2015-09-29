@@ -19,7 +19,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
         public int ReadCities(string filename)
         {
-            //TODO: Find path to the txt file          
+                      
             string line;           
 
             try
@@ -28,11 +28,14 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                 {
                     while ((line = reader.ReadLine()) != null)
                     {
+                        //TODO: In einer Zeile ausgeben
+                        string[] temp = new string[5];
+                        string currentl;
                         char[] delimiters = new char[] { '\t' };
                         string[] parts = line.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
                         for(int i = 0; i < parts.Length; i++)
                         {
-                            Console.WriteLine(parts[i]);                            
+                                                    
                         }
                         
           
