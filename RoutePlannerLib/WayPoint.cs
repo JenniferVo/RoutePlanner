@@ -14,7 +14,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         public double Longitude { get; set; }
         public double Latitude { get; set; }
 
-        //Lab2 1a)
+        
         public WayPoint(string _name, double _latitude, double _longitude)
         {
             this.Name = _name;
@@ -22,6 +22,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             this.Longitude = _longitude;
         }
 
+        //Lab2 1a)
         public override string ToString()
         {
             var culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
