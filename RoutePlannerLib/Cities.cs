@@ -21,10 +21,11 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         {
             //TODO: Find path to the txt file          
             string line;
+            string filePath = System.IO.Path.GetFullPath("filename");
 
             try
             {
-                using (var reader = new StreamReader("filename"))
+                using (var reader = new StreamReader(filename))
                 {
                     while ((line = reader.ReadLine()) != null)
                     {

@@ -46,7 +46,9 @@
     <Compile Include="WayPoint.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="citiesTestDataLab2.txt" />
+    <Content Include="citiesTestDataLab2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

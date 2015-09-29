@@ -20,7 +20,8 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerConsole
             Console.WriteLine(wayPointTest.ToString());
             Console.WriteLine("Distance between Bern and Tripoli: " + wayPointBern.Distance(wayPointTripolis) + " km");
             var citiesTest = new Cities();
-            citiesTest.ReadCities(@"C:\Users\Jenny\Desktop\citiesTestDataLab2.txt");            
+            //citiesTest.ReadCities(@"citiesTestDataLab2.txt"); 
+            citiesTest.ReadCities("citiesTestDataLab2.txt");               
             //Console.WriteLine("{0}: {1}/{2}", wayPoint.Name, wayPoint.Latitude, wayPoint.Longitude);
             Console.ReadKey();
         }
