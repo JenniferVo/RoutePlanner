@@ -20,8 +20,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         public int ReadCities(string filename)
         {
             //TODO: Find path to the txt file          
-            string line;
-            string filePath = System.IO.Path.GetFullPath("filename");
+            string line;           
 
             try
             {
@@ -36,21 +35,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                             Console.WriteLine(parts[i]);                            
                         }
                         
-                        //IEnumerable<string[]> allCitiesAsSplittedStrings = reader.GetSplittedLines('\t');           
-                        //foreach (string[] currentCity in parts)                     
-                        //{
-                        //    int tempPopulation;
-                        //    double tempLatitude;
-                        //    double tempLongtitude;
-                        //    string nameTemp = currentCity[0];
-                        //    string countryTemp = currentCity[1];
-                        //    Int32.TryParse(currentCity[2], out tempPopulation);
-                        //    double.TryParse(currentCity[3], out tempLatitude);
-                        //    double.TryParse(currentCity[4], out tempLongtitude);
-                        //    City newCity = new City(nameTemp, countryTemp, tempPopulation, tempLatitude, tempLongtitude);
-                        //    cities.Add(newCity);
-                        //    numberOfNewCities++;
-                        //}
+          
                     }
                 }    
             }
