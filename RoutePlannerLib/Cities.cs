@@ -18,27 +18,18 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         }
 
         public int ReadCities(string filename)
-        {
-                      
-            string line;           
+        {                      
+            string line;
+            char[] delimiters = new char[] { '\t' };
 
             try
             {
                 using (var reader = new StreamReader(filename))
                 {
                     while ((line = reader.ReadLine()) != null)
-                    {
-                        //TODO: In einer Zeile ausgeben
-                        string[] temp = new string[5];
-                        string currentl;
-                        char[] delimiters = new char[] { '\t' };
-                        string[] parts = line.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-                        for(int i = 0; i < parts.Length; i++)
-                        {
-                                                    
-                        }
-                        
-          
+                    {                       
+                        string[] parts = line.Split(delimiters);
+                        new City(parts[0], parts[1], Int32.Parse(parts[2]), Double.Parse(parts[3]), Double.Parse(parts[4]));    
                     }
                 }    
             }
@@ -50,23 +41,48 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         }
     
         public City this[int indexOfCity]
-        {
-            //TODO: add exception
+        {            
             get
             {
-                IEnumerator<City> enumerateOverCities = cities.GetEnumerator();
-
-                for (int i = 0; i < indexOfCity; i++)
+                if(indexOfCity > cities.Count || indexOfCity < cities.Count)
                 {
-                    enumerateOverCities.MoveNext();
+                    throw new IndexOutOfRangeException("Please enter a valid index!");
                 }
-                enumerateOverCities.MoveNext();
-                return enumerateOverCities.Current;
+                else
+                {
+                    IEnumerator<City> enumerateOverCities = cities.GetEnumerator();
+
+                    for (int i = 0; i < indexOfCity; i++)
+                    {
+                        enumerateOverCities.MoveNext();
+                    }
+                    enumerateOverCities.MoveNext();
+                    return enumerateOverCities.Current;
+                }
             }
             set { }
         }
 
-
+        public City this[string cityName]
+        {
+            get
+            {
+                City cityFound = cities.Find(delegate (City c)
+                {
+                    return c.Name == cityName;
+                });
+                if(cityFound == null)
+                {
+                    throw new KeyNotFoundException("No such city was found");
+                }
+                else
+                {
+                    return cityFound;
+                }                
+            }
+          
+            //zwischen Gross- und Kleinschreibung unterscheiden      
+        }
 
         public IEnumerable<City> FindNeighbours(WayPoint location, double distance)
         {            
