@@ -10,7 +10,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
     public class Cities
     {
         private List<City> cities;
-        public int Count { get; }
+        public int Count { get; private set; }
 
         public Cities()
         {
@@ -21,6 +21,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         {                      
             string line;
             char[] delimiters = new char[] { '\t' };
+            int countNewCities = 0;
 
             try
             {
@@ -29,22 +30,30 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                     while ((line = reader.ReadLine()) != null)
                     {                       
                         string[] parts = line.Split(delimiters);
-                        new City(parts[0], parts[1], Int32.Parse(parts[2]), Double.Parse(parts[3]), Double.Parse(parts[4]));    
+                        // Make name lowercase and then...
+                        string cityNameTemp1 = parts[0].ToLower();
+                        // ...make first letter uppercase
+                        string cityNameTemp2 = cityNameTemp1.First().ToString().ToUpper() + cityNameTemp1.Substring(1);
+                        City newCity = new City(cityNameTemp2, parts[1], Int32.Parse(parts[2]), Double.Parse(parts[3]), Double.Parse(parts[4]));
+                        cities.Add(newCity);
+                        countNewCities++;   
                     }
                 }    
             }
-            catch (Exception e)
+            catch (Exception e)           
             {
                 Console.WriteLine("The file could not be read: " + e.Message);
             }
-            return Count;
+
+            this.Count += countNewCities;
+            return countNewCities;
         }
     
         public City this[int indexOfCity]
         {            
             get
             {
-                if(indexOfCity > cities.Count || indexOfCity < cities.Count)
+                if(indexOfCity > cities.Count || indexOfCity < 0)
                 {
                     throw new IndexOutOfRangeException("Please enter a valid index!");
                 }
@@ -66,22 +75,25 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         public City this[string cityName]
         {
             get
-            {
+            {                
                 City cityFound = cities.Find(delegate (City c)
                 {
+                    cityFound = new City(c.Name, c.Country, c.Population, c.Location.Latitude, c.Location.Longitude);
                     return c.Name == cityName;
-                });
-                if(cityFound == null)
+                });                
+                if (cityFound == null)
                 {
                     throw new KeyNotFoundException("No such city was found");
                 }
                 else
                 {
                     return cityFound;
-                }                
+                }
             }
-          
-            //zwischen Gross- und Kleinschreibung unterscheiden      
+
+            //zwischen Gross- und Kleinschreibung unterscheiden 
+            //should be case insensitive?
+            // StringComparison.CurrentCultureIgnoreCase
         }
 
         public IEnumerable<City> FindNeighbours(WayPoint location, double distance)
