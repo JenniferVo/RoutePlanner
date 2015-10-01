@@ -66,11 +66,25 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 		public List<Link> FindShortestRouteBetween(string fromCity, string toCity, TransportMode mode)
 		{
             //TODO
-            RouteRequested?.Invoke(this,
-                    new RouteRequestEventArgs(new City(fromCity, "", 0, 0, 0),
-                                              new City(toCity, "", 0, 0, 0), mode));
-            this.routes = null;
+
+            if (cities[fromCity].Name == fromCity && cities[toCity].Name == toCity)
+            {
+                // Make fromCity name lowercase and then...
+                string fromCityNameTemp1 = fromCity.ToLower();
+                // ...make first letter uppercase
+                string fromCityNameTemp2 = fromCityNameTemp1.First().ToString().ToUpper() + fromCityNameTemp1.Substring(1);
+
+                // Make toCity name lowercase and then...
+                string toCityNameTemp1 = toCity.ToLower();
+                // ...make first letter uppercase
+                string toCityNameTemp2 = toCityNameTemp1.First().ToString().ToUpper() + toCityNameTemp1.Substring(1);
+
+                RouteRequested?.Invoke(this,
+                        new RouteRequestEventArgs(new City(fromCityNameTemp2, "", 0, 0, 0),
+                                                  new City(toCityNameTemp2, "", 0, 0, 0), mode));
+                this.routes = null;                
+            }
             return routes;
-		}
+        }
 	}
 }

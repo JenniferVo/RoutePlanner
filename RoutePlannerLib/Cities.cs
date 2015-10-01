@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Globalization;
 
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 {
@@ -23,8 +24,6 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             char[] delimiters = new char[] { '\t' };
             int countNewCities = 0;
 
-            try
-            {
                 using (var reader = new StreamReader(filename))
                 {
                     while ((line = reader.ReadLine()) != null)
@@ -39,12 +38,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                         countNewCities++;   
                     }
                 }    
-            }
-            catch (Exception e)           
-            {
-                Console.WriteLine("The file could not be read: " + e.Message);
-            }
-
+                
             this.Count += countNewCities;
             return countNewCities;
         }
@@ -78,9 +72,9 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             {                
                 City cityFound = cities.Find(delegate (City c)
                 {
-                    cityFound = new City(c.Name, c.Country, c.Population, c.Location.Latitude, c.Location.Longitude);
-                    return c.Name == cityName;
-                });                
+                    cityFound = new City(c.Name, c.Country, c.Population, c.Location.Latitude, c.Location.Longitude);                 
+                    return c.Name.Equals(cityName, StringComparison.InvariantCultureIgnoreCase);
+                });
                 if (cityFound == null)
                 {
                     throw new KeyNotFoundException("No such city was found");
@@ -90,10 +84,6 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                     return cityFound;
                 }
             }
-
-            //zwischen Gross- und Kleinschreibung unterscheiden 
-            //should be case insensitive?
-            // StringComparison.CurrentCultureIgnoreCase
         }
 
         public IEnumerable<City> FindNeighbours(WayPoint location, double distance)
