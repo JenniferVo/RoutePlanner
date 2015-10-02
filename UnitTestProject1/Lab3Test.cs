@@ -85,31 +85,31 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerTest
 			
 			var routes = new Routes(cities);
 
-            // test available cities
-            routes.RouteRequested += (sender, e) =>
-            {
-                Assert.AreEqual("Bern", e.FromCity.Name);
-                Assert.AreEqual("Zürich", e.ToCity.Name);
-            };
+			// test available cities
+			routes.RouteRequested += (sender, e) =>
+			{
+				Assert.AreEqual("Bern", e.FromCity.Name);
+				Assert.AreEqual("Zürich", e.ToCity.Name);
+			};
 			routes.FindShortestRouteBetween("Bern", "Zürich", TransportMode.Rail);
 
-            // test case insensitivity
-            routes.FindShortestRouteBetween("BeRN", "ZüRiCh", TransportMode.Rail);
+			// test case insensitivity
+			routes.FindShortestRouteBetween("BeRN", "ZüRiCh", TransportMode.Rail);
 
-            // test not existing cities
-            routes = new Routes(cities);
-            routes.RouteRequested += (sender, e) =>
-            {
-                Assert.Fail("Listeners should only be informed about valid requests.");
-            };
-            try
-            {
-                routes.FindShortestRouteBetween("doesNotExist", "either", TransportMode.Rail);
-                Assert.Fail("Should throw KeyNotFoundException when called with invalid city names.");
-            }
-            catch(KeyNotFoundException)
-            {
-            }
+			// test not existing cities
+			routes = new Routes(cities);
+			routes.RouteRequested += (sender, e) =>
+			{
+				Assert.Fail("Listeners should only be informed about valid requests.");
+			};
+			try
+			{
+				routes.FindShortestRouteBetween("doesNotExist", "either", TransportMode.Rail);
+				Assert.Fail("Should throw KeyNotFoundException when called with invalid city names.");
+			}
+			catch(KeyNotFoundException)
+			{
+			}
 		}
 		
 		[TestMethod]
@@ -143,7 +143,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerTest
 			Assert.AreEqual(reqWatch.GetCityRequests(cities["Zürich"]), 2);
 			Assert.AreEqual(reqWatch.GetCityRequests(cities["Bern"]), 1);
 			Assert.AreEqual(reqWatch.GetCityRequests(cities["Basel"]), 0);
-            Assert.AreEqual(reqWatch.GetCityRequests(cities["Lausanne"]), 0);
+			Assert.AreEqual(reqWatch.GetCityRequests(cities["Lausanne"]), 0);
 		}
 	}
 }
