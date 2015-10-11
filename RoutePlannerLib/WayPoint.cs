@@ -48,5 +48,15 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                           Math.Cos(Longitude * Math.PI / 180 - _target.Longitude * Math.PI / 180));
             return d * radius;
         }
+
+        public static WayPoint operator+ (WayPoint lhs, WayPoint rhs)
+        {
+            return new WayPoint(lhs.Name, lhs.Latitude + rhs.Latitude, lhs.Longitude + rhs.Longitude);
+        }
+
+        public static WayPoint operator- (WayPoint lhs, WayPoint rhs)
+        {
+            return new WayPoint(lhs.Name, lhs.Latitude - rhs.Latitude, lhs.Longitude - rhs.Longitude);
+        }
     }
 }

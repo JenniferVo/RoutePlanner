@@ -63,10 +63,34 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 			return Count;
 		}
 
-		public List<Link> FindShortestRouteBetween(string fromCity, string toCity, TransportMode mode)
-		{
-            //TODO
+        //old version 
+        //public List<Link> FindShortestRouteBetween(string fromCity, string toCity, TransportMode mode)
+        //{
+        //          //TODO
 
+        //          if (cities[fromCity].Name == fromCity && cities[toCity].Name == toCity)
+        //          {
+        //              // Make fromCity name lowercase and then...
+        //              string fromCityNameTemp1 = fromCity.ToLower();
+        //              // ...make first letter uppercase
+        //              string fromCityNameTemp2 = fromCityNameTemp1.First().ToString().ToUpper() + fromCityNameTemp1.Substring(1);
+
+        //              // Make toCity name lowercase and then...
+        //              string toCityNameTemp1 = toCity.ToLower();
+        //              // ...make first letter uppercase
+        //              string toCityNameTemp2 = toCityNameTemp1.First().ToString().ToUpper() + toCityNameTemp1.Substring(1);
+
+        //              RouteRequested?.Invoke(this,
+        //                      new RouteRequestEventArgs(new City(fromCityNameTemp2, "", 0, 0, 0),
+        //                                                new City(toCityNameTemp2, "", 0, 0, 0), mode));
+        //              this.routes = null;                
+        //          }
+        //          return routes;
+        //      }
+
+        public List<Link> FindShortestRouteBetween(string fromCity, string toCity, TransportMode mode)
+        {
+            //inform listeners
             if (cities[fromCity].Name == fromCity && cities[toCity].Name == toCity)
             {
                 // Make fromCity name lowercase and then...
@@ -82,9 +106,76 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                 RouteRequested?.Invoke(this,
                         new RouteRequestEventArgs(new City(fromCityNameTemp2, "", 0, 0, 0),
                                                   new City(toCityNameTemp2, "", 0, 0, 0), mode));
-                this.routes = null;                
+                this.routes = null;
             }
-            return routes;
+
+            //use dijkstra's algorithm to look for all single-source shortest paths
+            var visited = new Dictionary<City, DijkstraNode>();
+            var pending = new SortedSet<DijkstraNode>(new DijkstraNode[]
+            {
+                new DijkstraNode()
+                {
+                    VisitingCity = cities[fromCity],
+                    Distance = 0
+                }
+            });
+
+            while (pending.Any())
+            {
+                var cur = pending.Last();
+                pending.Remove(cur);
+
+                if (!visited.ContainsKey(cur.VisitingCity))
+                {
+                    visited[cur.VisitingCity] = cur;
+
+                    foreach (var link in GetListOfAllOutgoingRoutes(cur.VisitingCity, mode))
+                        pending.Add(new DijkstraNode()
+                        {
+                            VisitingCity = (link.FromCity == cur.VisitingCity) ? link.ToCity : link.FromCity,
+                            Distance = cur.Distance + link.Distance,
+                            PreviousCity = cur.VisitingCity
+                        });
+                }
+            }
+
+            //did we find any route?
+            if (!visited.ContainsKey(cities[toCity]))
+                return null;
+
+            //create a list of cities that we passed along the way
+            var citiesEnRoute = new List<City>();
+            for (var c = cities[toCity]; c != null; c = visited[c].PreviousCity)
+                citiesEnRoute.Add(c);
+            citiesEnRoute.Reverse();
+
+            //convert that city-list into a list of links
+            IEnumerable<Link> paths = ConvertListOfCitiesToListOfLinks(citiesEnRoute);
+            return paths.ToList();
         }
-	}
+
+        public Routes GetListOfAllOutgoingRoutes(City visitingCity, TransportMode mode)
+        {
+
+        }
+
+        public List<Link> ConvertListOfCitiesToListOfLinks(List<City> cietienEnRoute)
+        {
+
+        }
+
+
+
+        private class DijkstraNode : IComparable<DijkstraNode>
+        {
+            public City VisitingCity;
+            public double Distance;
+            public City PreviousCity;
+
+            public int CompareTo(DijkstraNode other)
+            {
+                return other.Distance.CompareTo(Distance);
+            }
+        }
+    }
 }
