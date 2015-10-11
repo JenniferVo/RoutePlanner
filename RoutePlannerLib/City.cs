@@ -35,7 +35,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                 return false;
             }
 
-            return (Name == city.Name);
+            return (Country == city.Country) && (Name == city.Name);
         }
 
         public override int GetHashCode()

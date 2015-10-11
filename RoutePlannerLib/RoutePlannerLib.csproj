@@ -55,7 +55,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="citiesTestDataLab3.txt" />
+    <Content Include="citiesTestDataLab4.txt" />
     <Content Include="linksTestDataLab3.txt" />
+    <Content Include="linksTestDataLab4.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
