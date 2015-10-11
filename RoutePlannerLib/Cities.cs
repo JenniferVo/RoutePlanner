@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Globalization;
+using Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Util;
 
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 {
@@ -18,31 +19,51 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             this.cities = new List<City>();
         }
 
-        public int ReadCities(string filename)
-        {                      
-            string line;
-            char[] delimiters = new char[] { '\t' };
-            int countNewCities = 0;
+        //old version
+        //public int ReadCities(string filename)
+        //{                      
+        //    string line;
+        //    char[] delimiters = new char[] { '\t' };
+        //    int countNewCities = 0;
 
-                using (var reader = new StreamReader(filename))
-                {
-                    while ((line = reader.ReadLine()) != null)
-                    {                       
-                        string[] parts = line.Split(delimiters);
-                        // Make name lowercase and then...
-                        string cityNameTemp1 = parts[0].ToLower();
-                        // ...make first letter uppercase
-                        string cityNameTemp2 = cityNameTemp1.First().ToString().ToUpper() + cityNameTemp1.Substring(1);
-                        City newCity = new City(cityNameTemp2, parts[1], Int32.Parse(parts[2]), Double.Parse(parts[3]), Double.Parse(parts[4]));
-                        cities.Add(newCity);
-                        countNewCities++;   
-                    }
-                }    
+        //        using (var reader = new StreamReader(filename))
+        //        {
+        //            while ((line = reader.ReadLine()) != null)
+        //            {                       
+        //                string[] parts = line.Split(delimiters);
+        //                // Make name lowercase and then...
+        //                string cityNameTemp1 = parts[0].ToLower();
+        //                // ...make first letter uppercase
+        //                string cityNameTemp2 = cityNameTemp1.First().ToString().ToUpper() + cityNameTemp1.Substring(1);
+        //                City newCity = new City(cityNameTemp2, parts[1], Int32.Parse(parts[2]), Double.Parse(parts[3]), Double.Parse(parts[4]));
+        //                cities.Add(newCity);
+        //                countNewCities++;   
+        //            }
+        //        }    
                 
-            this.Count += countNewCities;
-            return countNewCities;
+        //    this.Count += countNewCities;
+        //    return countNewCities;
+        //}
+
+
+        public int ReadCities(string filename)
+        {
+            int countNewCities = 0;
+            using (TextReader reader = new StreamReader(filename))
+            {
+                IEnumerable<string[]> citiesAsStrings = reader.GetSplittedLines('\t');
+                foreach (string[] cs in citiesAsStrings)
+                {
+                    cities.Add(new City(cs[0].Trim(), cs[1].Trim(),
+                                                int.Parse(cs[2]),
+                                                double.Parse(cs[3]),
+                                                double.Parse(cs[4])));
+                }
+                this.Count += countNewCities;
+                return countNewCities;
+            }
         }
-    
+
         public City this[int indexOfCity]
         {            
             get
