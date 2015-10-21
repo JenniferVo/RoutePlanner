@@ -133,8 +133,8 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                     foreach (var link in GetListOfAllOutgoingRoutes(cur.VisitingCity, mode))
                         pending.Add(new DijkstraNode()
                         {
-                            VisitingCity = (link.fromCity == cur.VisitingCity) ? link.toCity : link.fromCity,
-                            Distance = cur.Distance + link.distance,
+                            VisitingCity = (link.FromCity == cur.VisitingCity) ? link.ToCity : link.FromCity,
+                            Distance = cur.Distance + link.Distance,
                             PreviousCity = cur.VisitingCity
                         });
                 }
@@ -155,19 +155,39 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             return paths.ToList();
         }
 
-        public List<Routes> GetListOfAllOutgoingRoutes(City visitingCity, TransportMode mode)
+        //with LINQ
+        public List<Link> GetListOfAllOutgoingRoutes(City visitingCity, TransportMode mode)
         {
-
+            var allCities = this.routes.Where(r => r.FromCity.Equals(visitingCity) && r.TransportMode.Equals(mode));
+            return (List<Link>) allCities;
         }
 
+        //public List<Link> ConvertListOfCitiesToListOfLinks(List<City> citiesEnRoute)
+        //{
+        //    List<Link> listToBeReturned = new List<Link>();
+        //    for(int i = 0; i<citiesEnRoute.Count; i++)
+        //    {
+        //        Link toBeAdded = new Link(citiesEnRoute[i], citiesEnRoute[i+1], 0);
+        //        listToBeReturned.Add(toBeAdded);
+        //    }
+        //    return listToBeReturned;
+        //}
+
+        //as LINQ
         public List<Link> ConvertListOfCitiesToListOfLinks(List<City> citiesEnRoute)
         {
             List<Link> listToBeReturned = new List<Link>();
-            for(int i = 0; i<citiesEnRoute.Count; i++)
+            City to = null;
+
+            foreach (City c in citiesEnRoute)
             {
-                //distance? fromCity? toCity?
-                Link toBeAdded = new Link(citiesEnRoute[i], citiesEnRoute[i + 1], 0);
-                listToBeReturned.Add(toBeAdded);
+                City from = to;
+                to = c;
+                if(from != null)
+                {
+                    Link toBeAdded = new Link(from, to, 0);
+                    listToBeReturned.Add(toBeAdded);
+                }               
             }
             return listToBeReturned;
         }

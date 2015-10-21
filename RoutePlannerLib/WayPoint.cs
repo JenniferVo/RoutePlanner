@@ -15,11 +15,11 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         public double Latitude { get; set; }
 
         
-        public WayPoint(string _name, double _latitude, double _longitude)
+        public WayPoint(string name, double latitude, double longitude)
         {
-            this.Name = _name;
-            this.Latitude = _latitude;
-            this.Longitude = _longitude;
+            this.Name = name;
+            this.Latitude = latitude;
+            this.Longitude = longitude;
         }
 
         //Lab2 1a)

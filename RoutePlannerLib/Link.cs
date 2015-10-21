@@ -48,16 +48,16 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 			}
 		}
 
-		public Link(City _fromCity, City _toCity, double _distance)
+		public Link(City fromCity, City toCity, double distance)
 		{
-			fromCity = _fromCity;
-			toCity = _toCity;
-			distance = _distance;
+			this.fromCity = fromCity;
+			this.toCity = toCity;
+			this.distance = distance;
 		}
 
-		public Link(City _fromCity, City _toCity, double _distance, TransportMode _transportMode) : this(_fromCity, _toCity, _distance)
+		public Link(City fromCity, City toCity, double distance, TransportMode transportMode) : this(fromCity, toCity, distance)
 		{
-			transportMode = _transportMode;
+			this.transportMode = transportMode;
 		}
 
 		public double Distance

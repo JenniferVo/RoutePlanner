@@ -108,10 +108,10 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         public City this[string cityName]
         {
             get
-            {                
+            {
                 City cityFound = cities.Find(delegate (City c)
                 {
-                    cityFound = new City(c.Name, c.Country, c.Population, c.Location.Latitude, c.Location.Longitude);                 
+                    cityFound = new City(c.Name, c.Country, c.Population, c.Location.Latitude, c.Location.Longitude);
                     return c.Name.Equals(cityName, StringComparison.InvariantCultureIgnoreCase);
                 });
                 if (cityFound == null)
