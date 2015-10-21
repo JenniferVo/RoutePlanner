@@ -40,28 +40,46 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         //                countNewCities++;   
         //            }
         //        }    
-                
+
         //    this.Count += countNewCities;
         //    return countNewCities;
         //}
 
+        // Lab 4 Version
+        //public int ReadCities(string filename)
+        //{
+        //    int countNewCities = 0;
+        //    using (TextReader reader = new StreamReader(filename))
+        //    {
+        //        IEnumerable<string[]> citiesAsStrings = reader.GetSplittedLines('\t');
+        //        foreach (string[] cs in citiesAsStrings)
+        //        {
+        //            cities.Add(new City(cs[0].Trim(), cs[1].Trim(),
+        //                                        int.Parse(cs[2]),
+        //                                        double.Parse(cs[3]),
+        //                                        double.Parse(cs[4])));
+        //        }
+        //        this.Count += countNewCities;
+        //        return countNewCities;
+        //    }
+        //}
 
+        //Lab 6 Version
         public int ReadCities(string filename)
         {
             int countNewCities = 0;
             using (TextReader reader = new StreamReader(filename))
             {
-                IEnumerable<string[]> citiesAsStrings = reader.GetSplittedLines('\t');
-                foreach (string[] cs in citiesAsStrings)
-                {
-                    cities.Add(new City(cs[0].Trim(), cs[1].Trim(),
-                                                int.Parse(cs[2]),
-                                                double.Parse(cs[3]),
-                                                double.Parse(cs[4])));
-                }
-                this.Count += countNewCities;
-                return countNewCities;
+                var x = from cs in reader.GetSplittedLines('\t')
+                        select new City(cs[0].Trim(), cs[1].Trim(),
+                            int.Parse(cs[2]),
+                            double.Parse(cs[3]),
+                            double.Parse(cs[4]));
+                cities.AddRange(x);
             }
+            this.Count += countNewCities;
+            return countNewCities;
+
         }
 
         public City this[int indexOfCity]

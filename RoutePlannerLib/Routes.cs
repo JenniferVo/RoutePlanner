@@ -10,7 +10,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 	///	<summary>
 	///	Manages	a routes from a	city to	another	city.
 	///	</summary>
-	public class Routes
+	public class Routes :IRoutes
 	{
 		private List<Link> routes = new List<Link>();
 		private Cities cities;
@@ -88,6 +88,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         //          return routes;
         //      }
 
+        #region Lab04: Dijkstra implementation
         public List<Link> FindShortestRouteBetween(string fromCity, string toCity, TransportMode mode)
         {
             //inform listeners
@@ -132,8 +133,8 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                     foreach (var link in GetListOfAllOutgoingRoutes(cur.VisitingCity, mode))
                         pending.Add(new DijkstraNode()
                         {
-                            VisitingCity = (link.FromCity == cur.VisitingCity) ? link.ToCity : link.FromCity,
-                            Distance = cur.Distance + link.Distance,
+                            VisitingCity = (link.fromCity == cur.VisitingCity) ? link.toCity : link.fromCity,
+                            Distance = cur.Distance + link.distance,
                             PreviousCity = cur.VisitingCity
                         });
                 }
@@ -154,17 +155,22 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             return paths.ToList();
         }
 
-        public Routes GetListOfAllOutgoingRoutes(City visitingCity, TransportMode mode)
+        public List<Routes> GetListOfAllOutgoingRoutes(City visitingCity, TransportMode mode)
         {
 
         }
 
-        public List<Link> ConvertListOfCitiesToListOfLinks(List<City> cietienEnRoute)
+        public List<Link> ConvertListOfCitiesToListOfLinks(List<City> citiesEnRoute)
         {
-
+            List<Link> listToBeReturned = new List<Link>();
+            for(int i = 0; i<citiesEnRoute.Count; i++)
+            {
+                //distance? fromCity? toCity?
+                Link toBeAdded = new Link(citiesEnRoute[i], citiesEnRoute[i + 1], 0);
+                listToBeReturned.Add(toBeAdded);
+            }
+            return listToBeReturned;
         }
-
-
 
         private class DijkstraNode : IComparable<DijkstraNode>
         {
@@ -176,6 +182,51 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
             {
                 return other.Distance.CompareTo(Distance);
             }
+        }
+        #endregion
+
+        public City[] FindCities(TransportMode transportMode)
+        {
+            //get all cities for LINQ to iterate over it
+            List<City> allCities = new List<City>();
+
+            //here we get all the cities from  the cities object to fill them in the list
+            int numberOfCities = this.cities.Count;
+            for (int i = 0; i < numberOfCities; i++)
+            {
+                allCities.Add(this.cities[i]);
+            }            
+
+            //LINQ Query gets all the Link Objects in this.routes that contain the transport mode and puts them into the IEnoumerable list allValidLinks
+            var allValidLinks = from linkToBeChecked in this.routes
+                                where linkToBeChecked.TransportMode.Equals(transportMode)
+                                select linkToBeChecked;
+
+            //lambda funtion for checking if a city is in the toCity or fromCity of a link. lambda function realised with delegate Func
+            Func<City, bool> CheckIfCityContained = (City cityToBeChecked) =>
+            {
+                bool contained = false;
+                foreach (var currentLink in allValidLinks)
+                {
+                    if (currentLink.FromCity.Equals(cityToBeChecked))
+                    {
+                        contained = true;
+                        break;
+                    }
+                    else if (currentLink.ToCity.Equals(cityToBeChecked))
+                    {
+                        contained = true;
+                        break;
+                    }
+                }
+                return contained;
+            };            
+
+            //LINQ Query that fills all cities from list allCities if they are in a to or from location of one of the links with the trasportMode  This check is done with the above specified lambda method.
+            var allCiiesToBeReturned = from cityToBeChecked in allCities
+                                       where (CheckIfCityContained(cityToBeChecked) == true)
+                                       select cityToBeChecked;
+            return allCiiesToBeReturned.ToArray();
         }
     }
 }
