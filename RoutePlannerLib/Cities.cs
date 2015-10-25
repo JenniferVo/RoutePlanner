@@ -67,7 +67,7 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
         //Lab 6 Version
         public int ReadCities(string filename)
         {
-            int countNewCities = 0;
+            int nofCitiesBefore = cities.Count;
             using (TextReader reader = new StreamReader(filename))
             {
                 var x = from cs in reader.GetSplittedLines('\t')
@@ -77,8 +77,8 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                             double.Parse(cs[4]));
                 cities.AddRange(x);
             }
-            this.Count += countNewCities;
-            return countNewCities;
+            Count = cities.Count();
+            return cities.Count - nofCitiesBefore;
 
         }
 

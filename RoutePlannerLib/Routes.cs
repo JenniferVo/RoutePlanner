@@ -242,11 +242,12 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
                 return contained;
             };            
 
-            //LINQ Query that fills all cities from list allCities if they are in a to or from location of one of the links with the trasportMode  This check is done with the above specified lambda method.
-            var allCiiesToBeReturned = from cityToBeChecked in allCities
+            //LINQ Query that fills all cities from list allCities if they are in a to or from location of one of the links with the trasportMode. This check is done with the above specified lambda method.
+            var allCitiesToBeReturned = from cityToBeChecked in allCities
                                        where (CheckIfCityContained(cityToBeChecked) == true)
                                        select cityToBeChecked;
-            return allCiiesToBeReturned.ToArray();
+
+            return allCitiesToBeReturned.ToArray();
         }
     }
 }

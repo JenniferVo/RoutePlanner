@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Properties;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,40 +12,68 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
     {
         static public IRoutes Create(Cities cities)
         {
-            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (Type t in a.GetTypes())
-                {
-                    if (t != null)
-                    {                        
-                        return CallConstructor(t, cities);
+            //Assembly[] temp = AppDomain.CurrentDomain.GetAssemblies();
 
-                    }
-                    throw new NotSupportedException();
-                }           
+            //foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies())
+            //{
+
+            //    foreach (Type t in a.GetTypes())
+            //    {
+            //        if (t != null)
+            //        {                        
+            //            //return CallConstructor(t, cities);
+
+            //        }
+            //        //throw new NotSupportedException();
+            //    }           
+            //}
+            //return null;
+
+            String path = Settings.Default.RouteAlgorithm;
+            Type type = Assembly.GetExecutingAssembly().GetType(path);
+
+            if (type.GetInterface("IRoutes") != null)
+            {
+
+                Object[] param = { cities };
+
+                return (IRoutes)Activator.CreateInstance(type, param);
+
             }
+
             return null;
         }
 
         static public IRoutes Create(Cities cities, string algorithmClassName)
         {
-            Type type = Type.GetType(algorithmClassName);
-            if (type != null)
+            try
             {
-                return CallConstructor(type, cities);
+                Type type = Assembly.GetExecutingAssembly().GetType(algorithmClassName);
+                if (type.GetInterface("IRoutes") != null)
+                {
+
+                    Object[] param = { cities };
+
+                    return (IRoutes)Activator.CreateInstance(type, param);
+
+                }
+                return null;
             }
-            throw new NotSupportedException();
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
-        private static IRoutes CallConstructor(Type t, Cities c)
-        {
-            ConstructorInfo ctor = t.GetConstructor(new Type[] { typeof(Cities) });
-            var r = ctor.Invoke(new object[] { c });
-            if (r == null)
-            {
-                throw new NotSupportedException();
-            }                
-            return (Routes)r;
-        }
+        //private static IRoutes CallConstructor(Type t, Cities c)
+        //{
+        //    ConstructorInfo ctor = t.GetConstructor(new Type[] { typeof(Cities) });
+        //    var r = ctor.Invoke(new object[] { c });
+        //    if (r == null)
+        //    {
+        //        throw new NotSupportedException();
+        //    }                
+        //    return (Routes)r;
+        //}
     }
 }

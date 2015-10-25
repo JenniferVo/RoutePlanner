@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Util
 {
     public class SimpleObjectReader
@@ -21,9 +22,11 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib.Util
 
         }
 
-        public City Next()
+        public Object Next()
         {
-
+            return null;
         }
+
+
     }
 }
