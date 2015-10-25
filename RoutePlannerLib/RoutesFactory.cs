@@ -41,28 +41,18 @@ namespace Fhnw.Ecnf.RoutePlanner.RoutePlannerLib
 
             }
 
-            return null;
+            throw new NotSupportedException();
         }
 
         static public IRoutes Create(Cities cities, string algorithmClassName)
-        {
-            try
-            {
+        {          
                 Type type = Assembly.GetExecutingAssembly().GetType(algorithmClassName);
                 if (type.GetInterface("IRoutes") != null)
                 {
-
                     Object[] param = { cities };
-
                     return (IRoutes)Activator.CreateInstance(type, param);
-
                 }
-                return null;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+                throw new NotSupportedException();            
         }
 
         //private static IRoutes CallConstructor(Type t, Cities c)
